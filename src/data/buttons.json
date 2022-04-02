@@ -1,0 +1,23 @@
+{
+  "values": [
+    { "name": "AC", "colour": "grey", "isNum": false },
+    { "name": "+/-", "colour": "grey", "isNum": false },
+    { "name": "%", "colour": "grey", "isNum": false },
+    { "name": " ÷ ", "colour": "orange", "isNum": false },
+    { "name": "7", "colour": "grey", "isNum": true },
+    { "name": "8", "colour": "grey", "isNum": true },
+    { "name": "9", "colour": "grey", "isNum": true },
+    { "name": " x ", "colour": "orange", "isNum": false },
+    { "name": "4", "colour": "grey", "isNum": true },
+    { "name": "5", "colour": "grey", "isNum": true },
+    { "name": "6", "colour": "grey", "isNum": true },
+    { "name": " - ", "colour": "orange", "isNum": false },
+    { "name": "1", "colour": "grey", "isNum": true },
+    { "name": "2", "colour": "grey", "isNum": true },
+    { "name": "3", "colour": "grey", "isNum": true },
+    { "name": " + ", "colour": "orange", "isNum": false },
+    { "name": "0", "colour": "grey", "size": "large", "isNum": true },
+    { "name": ".", "colour": "grey", "isNum": false },
+    { "name": "=", "colour": "orange", "isNum": false }
+  ]
+}
