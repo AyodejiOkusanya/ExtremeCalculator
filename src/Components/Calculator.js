@@ -6,41 +6,61 @@ import buttons from "../data/buttons.json";
 
 export const Calculator = () => {
   const [calcState, setCalcState] = useState({
-    total: "",
+    firstValue: "",
+    operator: "",
+    secondValue: "",
     screenValue: "0",
     isNum: false,
   });
 
+  const isOperator = (str) => {
+    return str === " + " || str === " - " || str === " x " || str === " ÷ ";
+  };
+
   const handleButtonClick = ({ name, isNum }) => {
-    if (name === "=") {
-      setCalcState((prevState) => {
-        const show = evaluate(prevState.total);
-        return {
-          total: show,
-          screenValue: show,
-          isNum,
-        };
-      });
-    } else {
-      setCalcState((prevState) => {
-        if (name === "AC") {
-          return { total: "", screenValue: "0", isNum };
-        }
-        if (isNum) {
+    setCalcState((prevState) => {
+      switch (true) {
+        case isOperator(name) && prevState.secondValue:
+          const sum = evaluate(
+            prevState.firstValue,
+            prevState.operator,
+            prevState.secondValue
+          );
           return {
-            total: prevState.total + name,
-            screenValue: prevState.isNum ? prevState.total + name : name,
+            ...prevState,
+            firstValue: sum,
+            secondValue: "",
+            operator: name === "=" ? "" : name,
+          };
+        case isOperator(name):
+          return {
+            ...prevState,
+            operator: name,
+          };
+        case name === "AC":
+          return { firstValue: "", screenValue: "0", isNum };
+        case isNum && prevState.operator:
+          return {
+            ...prevState,
+            secondValue: name,
+            screenValue: name,
             isNum,
           };
-        }
-        console.log("pre", prevState.screenValue);
-        return {
-          total: prevState.total + name,
-          screenValue: prevState.screenValue,
-          isNum,
-        };
-      });
-    }
+        case isNum:
+          return {
+            firstValue: prevState.firstValue + name,
+            screenValue: prevState.firstValue + name,
+            isNum,
+          };
+
+        default:
+          return {
+            firstValue: prevState.firstValue + name,
+            screenValue: prevState.screenValue,
+            isNum,
+          };
+      }
+    });
   };
 
   return (
