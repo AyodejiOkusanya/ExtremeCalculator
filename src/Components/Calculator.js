@@ -4,23 +4,43 @@ import { ButtonsPanel } from "./ButtonsPanel";
 import { evaluate } from "../helpers/evaluate";
 import buttons from "../data/buttons.json";
 
-export const Calculator = () => {
-  const [calcState, setCalcState] = useState({
-    firstValue: "",
-    operator: "",
-    secondValue: "",
-    screenValue: "0",
-    isNum: false,
-  });
+const isOperator = (str) => {
+  return (
+    str === " + " ||
+    str === " - " ||
+    str === " x " ||
+    str === " ÷ " ||
+    str === "="
+  );
+};
 
-  const isOperator = (str) => {
-    return str === " + " || str === " - " || str === " x " || str === " ÷ ";
-  };
+const shouldEvaluate = (name, prevState) => {
+  return isOperator(name) && !!prevState.secondValue;
+};
+
+const shouldClear = (name) => {
+  return name === "AC";
+};
+
+const shouldUpdateSecondValue = (isNum, prevState) => {
+  return isNum && !!prevState.operator;
+};
+
+const initialState = {
+  firstValue: "",
+  operator: "",
+  secondValue: "",
+  screenValue: "0",
+  isNum: false,
+};
+
+export const Calculator = () => {
+  const [calcState, setCalcState] = useState(initialState);
 
   const handleButtonClick = ({ name, isNum }) => {
     setCalcState((prevState) => {
       switch (true) {
-        case isOperator(name) && prevState.secondValue:
+        case shouldEvaluate(name, prevState):
           const sum = evaluate(
             prevState.firstValue,
             prevState.operator,
@@ -29,24 +49,31 @@ export const Calculator = () => {
           return {
             ...prevState,
             firstValue: sum,
+            screenValue: sum,
             secondValue: "",
+            isNum: false,
             operator: name === "=" ? "" : name,
           };
         case isOperator(name):
           return {
             ...prevState,
+            isNum,
             operator: name,
           };
-        case name === "AC":
-          return { firstValue: "", screenValue: "0", isNum };
-        case isNum && prevState.operator:
+        case shouldClear(name):
+          return initialState;
+        case shouldUpdateSecondValue(isNum, prevState):
+          const newName = prevState.secondValue
+            ? prevState.secondValue + name
+            : name;
           return {
             ...prevState,
-            secondValue: name,
-            screenValue: name,
+            secondValue: newName,
+            screenValue: newName,
             isNum,
           };
         case isNum:
+          console.log("isNum", prevState.operator);
           return {
             firstValue: prevState.firstValue + name,
             screenValue: prevState.firstValue + name,

@@ -14,14 +14,15 @@
 // };
 
 export function evaluate(firstValue, operator, secondValue) {
+  console.log("operator is", operator);
   switch (operator) {
-    case "+":
+    case " + ":
       return (parseFloat(firstValue) + parseFloat(secondValue)).toString();
-    case "-":
+    case " - ":
       return (parseFloat(firstValue) - parseFloat(secondValue)).toString();
-    case "x":
+    case " x ":
       return (parseFloat(firstValue) * parseFloat(secondValue)).toString();
-    case "÷":
+    case " ÷ ":
       return (parseFloat(firstValue) / parseFloat(secondValue)).toString();
     default:
       return "something went wrong";
